@@ -12,6 +12,7 @@ namespace ADO.NET
 	{
 		static void Main(string[] args)
 		{
+#if INTRO
 			const int PADDING = 25;
 			//1) Берем строку подключения
 			const string CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB; " +
@@ -36,17 +37,17 @@ namespace ADO.NET
 			SqlDataReader reader = command.ExecuteReader();
 
 			//5) Обрабатываем результаты запроса:
-			if(reader.HasRows)
+			if (reader.HasRows)
 			{
 				Console.WriteLine("=====================================================================================================");
-				for(int i = 0;i<reader.FieldCount;i++)
+				for (int i = 0; i < reader.FieldCount; i++)
 					Console.Write(reader.GetName(i).PadRight(PADDING));
 				Console.WriteLine();
 				Console.WriteLine("=====================================================================================================");
-				while(reader.Read())
+				while (reader.Read())
 				{
 					//Console.WriteLine($"{reader[0].ToString().PadRight(5)}\t{reader[2].ToString().PadRight(15)}\t{reader[1].ToString().PadRight(15)}");
-					for(int i = 0;i<reader.FieldCount;i++)
+					for (int i = 0; i < reader.FieldCount; i++)
 					{
 						Console.Write(reader[i].ToString().PadRight(PADDING));
 					}
@@ -55,7 +56,14 @@ namespace ADO.NET
 			}
 			//6)Закрываем SqlDataReader и Connection
 			reader.Close();
-			connection.Close();
+			connection.Close(); 
+#endif
+
+			//Connector.Select("*", "Directors");
+			//Connector.Select("title,release_date,FORMATMESSAGE(N'%s %s',first_name,last_name)", "Movies,Directors", "director=director_id");
+			Connector.InsertDirector("George", "Martin");
+			Connector.SelectDirectors();
+			Connector.SelectMovies();
 		}
 	}
 }
