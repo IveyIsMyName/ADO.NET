@@ -12,7 +12,7 @@ namespace ADO.NET
 	static internal class Connector
 	{
 		const int PADDING = 25;
-		const string CONNECTION_STRING = 
+		const string CONNECTION_STRING =
 			"Data Source=(localdb)\\MSSQLLocalDB; " +
 			"Initial Catalog=Movies;Integrated Security=True;" +
 			"Connect Timeout=30;Encrypt=False;" +
@@ -73,7 +73,36 @@ namespace ADO.NET
 		}
 		public static void InsertDirector(string first_name, string last_name)
 		{
-			string cmd = $"INSERT Directors(first_name,last_name) VALUES (N'{first_name}',N'{last_name}')";
+			//string cmd = $"INSERT Directors(first_name,last_name) VALUES (N'{first_name}',N'{last_name}')";
+			//SqlCommand command = new SqlCommand(cmd, connection);
+			//connection.Open();
+			//command.ExecuteNonQuery();
+			//connection.Close();
+			Insert("Directors", "first_name,last_name", $"N'{first_name}',N'{last_name}'");
+		}
+		public static void InsertMovie(string title, string release_date, string director)
+		{
+			Insert("Movies", "title,release_date,director", $"N'{title}','{release_date}',{director}");
+		}
+		public static void Insert(string table, string columns, string values, string key = "")
+		{
+			if (key == "")
+			{
+				key = table.ToLower();
+				key = key.Remove(key.Length - 1, 1) + "_id";
+			}
+			string[] all_columns = columns.Split(',');
+			string[] all_values = values.Split(',');
+			string condition = "";
+			for (int i = 0; i < all_columns.Length; i++)
+			{
+				condition += $"{all_columns[i]}={all_values[i]}";
+				if (i != all_columns.Length - 1) condition += " AND ";
+			}
+			string check_string = $"IF NOT EXISTS (SELECT {key} FROM {table} WHERE {condition})";
+			string query = $"INSERT {table}({columns}) VALUES ({values})";
+			string cmd = $"{check_string} BEGIN {query} END";
+			Console.WriteLine(cmd);
 			SqlCommand command = new SqlCommand(cmd, connection);
 			connection.Open();
 			command.ExecuteNonQuery();
