@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 using System.Data.SqlClient;
 using System.ComponentModel.Design;
+using System.Configuration;
 
 namespace ADO.NET
 {
 	static internal class Connector
 	{
 		const int PADDING = 25;
-		const string CONNECTION_STRING =
-			"Data Source=(localdb)\\MSSQLLocalDB; " +
-			"Initial Catalog=Movies;Integrated Security=True;" +
-			"Connect Timeout=30;Encrypt=False;" +
-			"TrustServerCertificate=False;" +
-			"ApplicationIntent=ReadWrite;" +
-			"MultiSubnetFailover=False";
+		//const string CONNECTION_STRING =
+		//	"Data Source=(localdb)\\MSSQLLocalDB; " +
+		//	"Initial Catalog=Movies;Integrated Security=True;" +
+		//	"Connect Timeout=30;Encrypt=False;" +
+		//	"TrustServerCertificate=False;" +
+		//	"ApplicationIntent=ReadWrite;" +
+		//	"MultiSubnetFailover=False";
+		static readonly string CONNECTION_STRING = ConfigurationManager.ConnectionStrings["Movies_PV_319"].ConnectionString;
 		static readonly SqlConnection connection;
 		static Connector()
 		{
