@@ -44,9 +44,9 @@
 			// statusStrip
 			// 
 			this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-			this.statusStrip.Location = new System.Drawing.Point(0, 428);
+			this.statusStrip.Location = new System.Drawing.Point(0, 426);
 			this.statusStrip.Name = "statusStrip";
-			this.statusStrip.Size = new System.Drawing.Size(800, 22);
+			this.statusStrip.Size = new System.Drawing.Size(800, 24);
 			this.statusStrip.TabIndex = 0;
 			this.statusStrip.Text = "statusStrip";
 			// 
@@ -61,7 +61,7 @@
 			this.tabControl.Location = new System.Drawing.Point(0, 0);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
-			this.tabControl.Size = new System.Drawing.Size(800, 428);
+			this.tabControl.Size = new System.Drawing.Size(800, 426);
 			this.tabControl.TabIndex = 1;
 			// 
 			// tabPageStudents
@@ -70,7 +70,7 @@
 			this.tabPageStudents.Location = new System.Drawing.Point(4, 25);
 			this.tabPageStudents.Name = "tabPageStudents";
 			this.tabPageStudents.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageStudents.Size = new System.Drawing.Size(792, 399);
+			this.tabPageStudents.Size = new System.Drawing.Size(792, 397);
 			this.tabPageStudents.TabIndex = 0;
 			this.tabPageStudents.Text = "Students";
 			this.tabPageStudents.UseVisualStyleBackColor = true;
@@ -125,7 +125,7 @@
 			this.dgvStudents.Name = "dgvStudents";
 			this.dgvStudents.RowHeadersWidth = 51;
 			this.dgvStudents.RowTemplate.Height = 24;
-			this.dgvStudents.Size = new System.Drawing.Size(792, 354);
+			this.dgvStudents.Size = new System.Drawing.Size(792, 352);
 			this.dgvStudents.TabIndex = 0;
 			// 
 			// Main
