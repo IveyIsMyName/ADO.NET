@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabelCount = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabPageStudents = new System.Windows.Forms.TabPage();
 			this.dgvStudents = new System.Windows.Forms.DataGridView();
@@ -40,7 +41,8 @@
 			this.dgvDisciplines = new System.Windows.Forms.DataGridView();
 			this.tabPageTeachers = new System.Windows.Forms.TabPage();
 			this.dgvTeachers = new System.Windows.Forms.DataGridView();
-			this.toolStripStatusLabelCount = new System.Windows.Forms.ToolStripStatusLabel();
+			this.cbGroupsDirections = new System.Windows.Forms.ComboBox();
+			this.btnShowAll = new System.Windows.Forms.Button();
 			this.statusStrip.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageStudents.SuspendLayout();
@@ -65,6 +67,12 @@
 			this.statusStrip.Size = new System.Drawing.Size(800, 26);
 			this.statusStrip.TabIndex = 0;
 			this.statusStrip.Text = "statusStrip";
+			// 
+			// toolStripStatusLabelCount
+			// 
+			this.toolStripStatusLabelCount.Name = "toolStripStatusLabelCount";
+			this.toolStripStatusLabelCount.Size = new System.Drawing.Size(182, 20);
+			this.toolStripStatusLabelCount.Text = "toolStripStatusLabelCount";
 			// 
 			// tabControl
 			// 
@@ -110,6 +118,8 @@
 			// 
 			// tabPageGroups
 			// 
+			this.tabPageGroups.Controls.Add(this.btnShowAll);
+			this.tabPageGroups.Controls.Add(this.cbGroupsDirections);
 			this.tabPageGroups.Controls.Add(this.dgvGroups);
 			this.tabPageGroups.Location = new System.Drawing.Point(4, 25);
 			this.tabPageGroups.Name = "tabPageGroups";
@@ -204,11 +214,23 @@
 			this.dgvTeachers.Size = new System.Drawing.Size(792, 368);
 			this.dgvTeachers.TabIndex = 0;
 			// 
-			// toolStripStatusLabelCount
+			// cbGroupsDirections
 			// 
-			this.toolStripStatusLabelCount.Name = "toolStripStatusLabelCount";
-			this.toolStripStatusLabelCount.Size = new System.Drawing.Size(182, 20);
-			this.toolStripStatusLabelCount.Text = "toolStripStatusLabelCount";
+			this.cbGroupsDirections.FormattingEnabled = true;
+			this.cbGroupsDirections.Location = new System.Drawing.Point(8, 6);
+			this.cbGroupsDirections.Name = "cbGroupsDirections";
+			this.cbGroupsDirections.Size = new System.Drawing.Size(363, 24);
+			this.cbGroupsDirections.TabIndex = 1;
+			// 
+			// btnShowAll
+			// 
+			this.btnShowAll.Location = new System.Drawing.Point(397, 6);
+			this.btnShowAll.Name = "btnShowAll";
+			this.btnShowAll.Size = new System.Drawing.Size(132, 23);
+			this.btnShowAll.TabIndex = 2;
+			this.btnShowAll.Text = "Show All";
+			this.btnShowAll.UseVisualStyleBackColor = true;
+			this.btnShowAll.Click += new System.EventHandler(this.btnShowAll_Click);
 			// 
 			// Main
 			// 
@@ -254,6 +276,8 @@
 		private System.Windows.Forms.DataGridView dgvDisciplines;
 		private System.Windows.Forms.DataGridView dgvTeachers;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelCount;
+		private System.Windows.Forms.ComboBox cbGroupsDirections;
+		private System.Windows.Forms.Button btnShowAll;
 	}
 }
 

@@ -27,11 +27,12 @@ namespace Academy
 		{
 			FreeConsole();
 		}
-		public DataTable Select(string columns, string tables, string condition = "")
+		public DataTable Select(string columns, string tables, string condition = "", string group_by="")
 		{
 			DataTable table = null;
 			string cmd = $"SELECT {columns} FROM {tables}";
 			if (condition != "") cmd += $" WHERE {condition}";
+			if (!string.IsNullOrEmpty(group_by)) cmd += $" GROUP BY {group_by}";
 			cmd += ";";
 			SqlCommand command = new SqlCommand(cmd, connection);
 			connection.Open();
@@ -65,6 +66,24 @@ namespace Academy
 			reader.Close();
 			connection.Close();
 			return table; 
+		}
+		public List<string> SelectColumn(string column, string table)
+		{
+			List<string> list = new List<string>();
+			string cmd = $"SELECT {column} FROM {table}";
+			SqlCommand command = new SqlCommand(cmd, connection);
+			connection.Open();
+			SqlDataReader reader = command.ExecuteReader();
+			if(reader.HasRows)
+			{
+				while (reader.Read())
+				{
+					list.Add(reader[0].ToString());	
+				}
+			}
+			reader.Close();
+			connection.Close();
+			return list;
 		}
 		[DllImport("kernel32.dll")]
 		public static extern bool AllocConsole();
