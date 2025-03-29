@@ -54,7 +54,7 @@ namespace Academy
 						"group_name,dbo.GetLearningDaysFor(group_name) AS weekdays,start_time,direction_name", "Groups,Directions",
 						$"direction=direction_id AND direction = '{d_directions[cbGroupsDirections.SelectedItem.ToString()]}'"
 						);
-			toolStripStatusLabelCount.Text = $"Количество групп: {dgvGroups.Rows.Count - 1}";
+			toolStripStatusLabelCount.Text = $"Количество групп: {CountRecordsInDGV(dgvGroups)}";
 		}
 		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -124,6 +124,10 @@ namespace Academy
 				"direction=direction_id"
 			);
 			toolStripStatusLabelCount.Text = $"Количество групп: {dgvGroups.Rows.Count - 1}";
+		}
+		int CountRecordsInDGV(DataGridView dgv)
+		{
+			return dgv.Rows.Count == 0 ? 0 : dgv.Rows.Count - 1;
 		}
 	}
 }
