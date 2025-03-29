@@ -72,14 +72,26 @@ namespace Academy
 					//dgvDirections.DataSource = connector.Select("*", "Directions");
 					dgvDirections.DataSource = connector.Select
 						(
-						 "d.direction_id, d.direction_name, " +
-						 "COUNT(DISTINCT g.group_id) AS group_count, " +
-						 "COUNT(s.stud_id) AS student_count",
-						 "Directions d " +
-						 "LEFT JOIN Groups g ON d.direction_id = g.direction " +
-						 "LEFT JOIN Students s ON g.group_id = s.[group]",
-						 "",
-						 "d.direction_id, d.direction_name"
+					   //"d.direction_id, d.direction_name, " +
+					   //"COUNT(DISTINCT g.group_id) AS group_count, " +
+					   //"COUNT(s.stud_id) AS student_count",
+					   //"Directions d " +
+					   //"LEFT JOIN Groups g ON d.direction_id = g.direction " +
+					   //"LEFT JOIN Students s ON g.group_id = s.[group]",
+					   //"",
+					   //"d.direction_id, d.direction_name"
+
+					   //"direction_name,COUNT(DISTINCT group_id) AS group_count, COUNT(stud_id) AS student_count",
+					   //"Students,Groups,Directions",
+					   //"[group]=group_id AND direction=direction_id",
+					   //"direction_name"
+
+					   "direction_name,COUNT(DISTINCT group_id) AS group_count, " +
+					   "COUNT(stud_id) AS student_count",
+					   "Students RIGHT JOIN Groups ON ([group]=group_id) " +
+					   "RIGHT JOIN Directions ON (direction=direction_id)",
+					   "",
+					   "direction_name"
 					   );
 					toolStripStatusLabelCount.Text = $"Количество направлений:{dgvDirections.Rows.Count - 1}";
 					break;
