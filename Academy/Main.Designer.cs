@@ -34,6 +34,8 @@
 			this.tabPageStudents = new System.Windows.Forms.TabPage();
 			this.dgvStudents = new System.Windows.Forms.DataGridView();
 			this.tabPageGroups = new System.Windows.Forms.TabPage();
+			this.btnShowAll = new System.Windows.Forms.Button();
+			this.cbGroupsDirections = new System.Windows.Forms.ComboBox();
 			this.dgvGroups = new System.Windows.Forms.DataGridView();
 			this.tabPageDirections = new System.Windows.Forms.TabPage();
 			this.dgvDirections = new System.Windows.Forms.DataGridView();
@@ -41,8 +43,6 @@
 			this.dgvDisciplines = new System.Windows.Forms.DataGridView();
 			this.tabPageTeachers = new System.Windows.Forms.TabPage();
 			this.dgvTeachers = new System.Windows.Forms.DataGridView();
-			this.cbGroupsDirections = new System.Windows.Forms.ComboBox();
-			this.btnShowAll = new System.Windows.Forms.Button();
 			this.statusStrip.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageStudents.SuspendLayout();
@@ -129,15 +129,33 @@
 			this.tabPageGroups.Text = "Groups";
 			this.tabPageGroups.UseVisualStyleBackColor = true;
 			// 
+			// btnShowAll
+			// 
+			this.btnShowAll.Location = new System.Drawing.Point(397, 6);
+			this.btnShowAll.Name = "btnShowAll";
+			this.btnShowAll.Size = new System.Drawing.Size(132, 23);
+			this.btnShowAll.TabIndex = 2;
+			this.btnShowAll.Text = "Show All";
+			this.btnShowAll.UseVisualStyleBackColor = true;
+			this.btnShowAll.Click += new System.EventHandler(this.btnShowAll_Click);
+			// 
+			// cbGroupsDirections
+			// 
+			this.cbGroupsDirections.FormattingEnabled = true;
+			this.cbGroupsDirections.Location = new System.Drawing.Point(8, 6);
+			this.cbGroupsDirections.Name = "cbGroupsDirections";
+			this.cbGroupsDirections.Size = new System.Drawing.Size(363, 24);
+			this.cbGroupsDirections.TabIndex = 1;
+			// 
 			// dgvGroups
 			// 
 			this.dgvGroups.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
 			this.dgvGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvGroups.Location = new System.Drawing.Point(3, 41);
+			this.dgvGroups.Location = new System.Drawing.Point(3, 35);
 			this.dgvGroups.Name = "dgvGroups";
 			this.dgvGroups.RowHeadersWidth = 51;
 			this.dgvGroups.RowTemplate.Height = 24;
-			this.dgvGroups.Size = new System.Drawing.Size(796, 358);
+			this.dgvGroups.Size = new System.Drawing.Size(796, 364);
 			this.dgvGroups.TabIndex = 0;
 			// 
 			// tabPageDirections
@@ -213,24 +231,6 @@
 			this.dgvTeachers.RowTemplate.Height = 24;
 			this.dgvTeachers.Size = new System.Drawing.Size(792, 368);
 			this.dgvTeachers.TabIndex = 0;
-			// 
-			// cbGroupsDirections
-			// 
-			this.cbGroupsDirections.FormattingEnabled = true;
-			this.cbGroupsDirections.Location = new System.Drawing.Point(8, 6);
-			this.cbGroupsDirections.Name = "cbGroupsDirections";
-			this.cbGroupsDirections.Size = new System.Drawing.Size(363, 24);
-			this.cbGroupsDirections.TabIndex = 1;
-			// 
-			// btnShowAll
-			// 
-			this.btnShowAll.Location = new System.Drawing.Point(397, 6);
-			this.btnShowAll.Name = "btnShowAll";
-			this.btnShowAll.Size = new System.Drawing.Size(132, 23);
-			this.btnShowAll.TabIndex = 2;
-			this.btnShowAll.Text = "Show All";
-			this.btnShowAll.UseVisualStyleBackColor = true;
-			this.btnShowAll.Click += new System.EventHandler(this.btnShowAll_Click);
 			// 
 			// Main
 			// 

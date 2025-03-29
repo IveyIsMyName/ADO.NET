@@ -15,6 +15,8 @@ namespace Academy
 	public partial class Main : Form
 	{
 		Connector connector;
+
+		Dictionary<string, int> d_directions;
 		public Main()
 		{
 			InitializeComponent();
@@ -22,6 +24,8 @@ namespace Academy
 			   (
 				   ConfigurationManager.ConnectionStrings["PV_319_Import"].ConnectionString
 			   );
+			d_directions = connector.GetDictionary("*", "directions");
+			cbGroupsDirections.Items.AddRange(d_directions.Select(k => k.Key).ToArray());
 			dgvStudents.DataSource = connector.Select
 				("last_name,first_name,middle_name,birth_date,group_name," +
 				"direction_name", "Students,Groups,Directions",
@@ -29,22 +33,27 @@ namespace Academy
 			toolStripStatusLabelCount.Text = $"Количество студентов:{dgvStudents.Rows.Count - 1}";
 			
 			cbGroupsDirections.SelectedIndexChanged += cbGroupsDirections_SelectedIndexChanged;
-			cbGroupsDirections.Items.AddRange(connector.SelectColumn("direction_name", "Directions").ToArray());
+			//cbGroupsDirections.Items.AddRange(connector.SelectColumn("direction_name", "Directions").ToArray());
 		}
 		
 		private void cbGroupsDirections_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (cbGroupsDirections.SelectedIndex == -1) return;
 
-			string selectedDirection = cbGroupsDirections.SelectedItem.ToString();
+			//string selectedDirection = cbGroupsDirections.SelectedItem.ToString();
 
 			// Загрузка только групп выбранного направления
-			dgvGroups.DataSource = connector.Select(
-				"group_name, dbo.GetLearningDaysFor(group_name) AS weekdays, start_time, direction_name",
-				"Groups,Directions",
-				$"direction=direction_id AND direction_name='{selectedDirection}'"
-			);
+			//dgvGroups.DataSource = connector.Select(
+			//	"group_name, dbo.GetLearningDaysFor(group_name) AS weekdays, start_time, direction_name",
+			//	"Groups,Directions",
+			//	$"direction=direction_id AND direction_name='{selectedDirection}'"
+			//);
 
+			dgvGroups.DataSource = connector.Select
+						(
+						"group_name,dbo.GetLearningDaysFor(group_name) AS weekdays,start_time,direction_name", "Groups,Directions",
+						$"direction=direction_id AND direction = '{d_directions[cbGroupsDirections.SelectedItem.ToString()]}'"
+						);
 			toolStripStatusLabelCount.Text = $"Количество групп: {dgvGroups.Rows.Count - 1}";
 		}
 		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
