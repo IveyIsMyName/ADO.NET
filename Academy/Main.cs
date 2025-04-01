@@ -15,11 +15,46 @@ namespace Academy
 	public partial class Main : Form
 	{
 		Connector connector;
-
+		
 		Dictionary<string, int> d_directions;
+
+		DataGridView[] tables;
+		Query[] queries = new Query[]
+		{
+			new Query("last_name,first_name,middle_name,birth_date,group_name," +
+					"direction_name", "Students,Groups,Directions",
+					"[group]=group_id AND direction=direction_id"),
+			new Query ("group_name,dbo.GetLearningDaysFor(group_name) AS weekdays,start_time,direction_name", "Groups,Directions",
+						"direction=direction_id"),
+			new Query ( "direction_name,COUNT(DISTINCT group_id) AS group_count, " +
+					   "COUNT(stud_id) AS student_count",
+					   "Students RIGHT JOIN Groups ON ([group]=group_id) " +
+					   "RIGHT JOIN Directions ON (direction=direction_id)",
+					   "",
+					   "direction_name"),
+			new Query ("*", "Disciplines"),
+			new Query ("*", "Teachers")
+		};
+		string[] status_messages = new string[]
+		{
+			$"Количество студентов: ",
+			$"Количество групп: ",
+			$"Количество направлений: ",
+			$"Количество дисциплин: ",
+			$"Количество преподавателй: ",
+		};
 		public Main()
 		{
 			InitializeComponent();
+
+			tables = new DataGridView[]
+		{
+			dgvStudents,
+			dgvGroups,
+			dgvDirections,
+			dgvDisciplines,
+			dgvTeachers
+		};
 			connector = new Connector
 			   (
 				   ConfigurationManager.ConnectionStrings["PV_319_Import"].ConnectionString
@@ -58,61 +93,66 @@ namespace Academy
 		}
 		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			switch (tabControl.SelectedIndex)
-			{
-				case 0:
-					dgvStudents.DataSource = connector.Select
-						(
-						"last_name,first_name,middle_name,birth_date,group_name," +
-						"direction_name", "Students,Groups,Directions",
-						"[group]=group_id AND direction=direction_id"
-						);
-					toolStripStatusLabelCount.Text = $"Количество студентов:{dgvStudents.Rows.Count - 1}";
-					break;
-				case 1:
-					dgvGroups.DataSource = connector.Select
-						(
-						"group_name,dbo.GetLearningDaysFor(group_name) AS weekdays,start_time,direction_name", "Groups,Directions", 
-						"direction=direction_id"
-						);
-					toolStripStatusLabelCount.Text = $"Количество групп:{dgvGroups.Rows.Count - 1}";
-					break;
-				case 2:
-					//dgvDirections.DataSource = connector.Select("*", "Directions");
-					dgvDirections.DataSource = connector.Select
-						(
-					   //"d.direction_id, d.direction_name, " +
-					   //"COUNT(DISTINCT g.group_id) AS group_count, " +
-					   //"COUNT(s.stud_id) AS student_count",
-					   //"Directions d " +
-					   //"LEFT JOIN Groups g ON d.direction_id = g.direction " +
-					   //"LEFT JOIN Students s ON g.group_id = s.[group]",
-					   //"",
-					   //"d.direction_id, d.direction_name"
+			int i = tabControl.SelectedIndex;
+			Query query = queries[i];
+			tables[i].DataSource = connector.Select(query.Columns, query.Tables, query.Condition, query.Group_by);
+			toolStripStatusLabelCount.Text = status_messages[i] + CountRecordsInDGV(tables[i]);
+			//switch (tabControl.SelectedIndex)
+			//{
+			//	case 0:
+			//		dgvStudents.DataSource = connector.Select
+			//			(
+			//			"last_name,first_name,middle_name,birth_date,group_name," +
+			//			"direction_name", "Students,Groups,Directions",
+			//			"[group]=group_id AND direction=direction_id"
+			//			);
+			//		toolStripStatusLabelCount.Text = $"Количество студентов:{dgvStudents.Rows.Count - 1}";
+			//		break;
+			//	case 1:
+			//		dgvGroups.DataSource = connector.Select
+			//			(
+			//			"group_name,dbo.GetLearningDaysFor(group_name) AS weekdays,start_time,direction_name", "Groups,Directions", 
+			//			"direction=direction_id"
+			//			);
+			//		toolStripStatusLabelCount.Text = $"Количество групп:{dgvGroups.Rows.Count - 1}";
+			//		break;
+			//	case 2:
+			//		//dgvDirections.DataSource = connector.Select("*", "Directions");
+			//		dgvDirections.DataSource = connector.Select
+			//			(
+			//		   //"d.direction_id, d.direction_name, " +
+			//		   //"COUNT(DISTINCT g.group_id) AS group_count, " +
+			//		   //"COUNT(s.stud_id) AS student_count",
+			//		   //"Directions d " +
+			//		   //"LEFT JOIN Groups g ON d.direction_id = g.direction " +
+			//		   //"LEFT JOIN Students s ON g.group_id = s.[group]",
+			//		   //"",
+			//		   //"d.direction_id, d.direction_name"
 
-					   //"direction_name,COUNT(DISTINCT group_id) AS group_count, COUNT(stud_id) AS student_count",
-					   //"Students,Groups,Directions",
-					   //"[group]=group_id AND direction=direction_id",
-					   //"direction_name"
+			//		   //"direction_name,COUNT(DISTINCT group_id) AS group_count, COUNT(stud_id) AS student_count",
+			//		   //"Students,Groups,Directions",
+			//		   //"[group]=group_id AND direction=direction_id",
+			//		   //"direction_name"
 
-					   "direction_name,COUNT(DISTINCT group_id) AS group_count, " +
-					   "COUNT(stud_id) AS student_count",
-					   "Students RIGHT JOIN Groups ON ([group]=group_id) " +
-					   "RIGHT JOIN Directions ON (direction=direction_id)",
-					   "",
-					   "direction_name"
-					   );
-					toolStripStatusLabelCount.Text = $"Количество направлений:{dgvDirections.Rows.Count - 1}";
-					break;
-				case 3:
-					dgvDisciplines.DataSource = connector.Select("*", "Disciplines");
-					toolStripStatusLabelCount.Text = $"Количество дисциплин:{dgvDisciplines.Rows.Count - 1}";
-					break;
-				case 4:
-					dgvTeachers.DataSource = connector.Select("*", "Teachers");
-					toolStripStatusLabelCount.Text = $"Количество преподавателей:{dgvTeachers.Rows.Count - 1}";
-					break;
-			}
+			//		   "direction_name,COUNT(DISTINCT group_id) AS group_count, " +
+			//		   "COUNT(stud_id) AS student_count",
+			//		   "Students RIGHT JOIN Groups ON ([group]=group_id) " +
+			//		   "RIGHT JOIN Directions ON (direction=direction_id)",
+			//		   "",
+			//		   "direction_name"
+			//		   );
+			//		toolStripStatusLabelCount.Text = $"Количество направлений:{dgvDirections.Rows.Count - 1}";
+			//		break;
+			//	case 3:
+			//		dgvDisciplines.DataSource = connector.Select("*", "Disciplines");
+			//		toolStripStatusLabelCount.Text = $"Количество дисциплин:{dgvDisciplines.Rows.Count - 1}";
+			//		break;
+			//	case 4:
+			//		dgvTeachers.DataSource = connector.Select("*", "Teachers");
+			//		toolStripStatusLabelCount.Text = $"Количество преподавателей:{dgvTeachers.Rows.Count - 1}";
+			//		break;
+			//}
+
 		}
 
 		private void btnShowAll_Click(object sender, EventArgs e)
@@ -128,6 +168,40 @@ namespace Academy
 		int CountRecordsInDGV(DataGridView dgv)
 		{
 			return dgv.Rows.Count == 0 ? 0 : dgv.Rows.Count - 1;
+		}
+
+		private void btnEmptyDirections_Click(object sender, EventArgs e)
+		{
+			dgvDirections.DataSource = connector.Select(
+			"direction_name, COUNT(DISTINCT group_id) AS group_count, " +
+			"COUNT(stud_id) AS student_count",
+			"Students RIGHT JOIN Groups ON ([group]=group_id) " +
+			"RIGHT JOIN Directions ON (direction=direction_id)",
+			"",
+			"direction_name HAVING COUNT(DISTINCT group_id) = 0 AND COUNT(stud_id) = 0");
+
+			toolStripStatusLabelCount.Text = $"Количество пустых направлений: {CountRecordsInDGV(dgvDirections)}";
+		}
+
+		private void btnShowAllDirections_Click(object sender, EventArgs e)
+		{
+			int i = tabControl.SelectedIndex;
+			Query query = queries[i];
+			dgvDirections.DataSource = connector.Select(query.Columns, query.Tables, query.Condition, query.Group_by);
+			toolStripStatusLabelCount.Text = status_messages[i] + CountRecordsInDGV(dgvDirections);
+		}
+
+		private void btnShowNonEmptyDirections_Click(object sender, EventArgs e)
+		{
+			dgvDirections.DataSource = connector.Select(
+			"direction_name, COUNT(DISTINCT group_id) AS group_count, " +
+			"COUNT(stud_id) AS student_count",
+			"Students RIGHT JOIN Groups ON ([group]=group_id) " +
+			"RIGHT JOIN Directions ON (direction=direction_id)",
+			"",
+			"direction_name HAVING COUNT(DISTINCT group_id) > 0 AND COUNT(stud_id) > 0");
+
+			toolStripStatusLabelCount.Text = $"Количество заполненных направлений: {CountRecordsInDGV(dgvDirections)}";
 		}
 	}
 }

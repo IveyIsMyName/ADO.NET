@@ -38,6 +38,9 @@
 			this.cbGroupsDirections = new System.Windows.Forms.ComboBox();
 			this.dgvGroups = new System.Windows.Forms.DataGridView();
 			this.tabPageDirections = new System.Windows.Forms.TabPage();
+			this.btnShowNonEmptyDirections = new System.Windows.Forms.Button();
+			this.btnShowAllDirections = new System.Windows.Forms.Button();
+			this.btnEmptyDirections = new System.Windows.Forms.Button();
 			this.dgvDirections = new System.Windows.Forms.DataGridView();
 			this.tabPageDisciplines = new System.Windows.Forms.TabPage();
 			this.dgvDisciplines = new System.Windows.Forms.DataGridView();
@@ -160,6 +163,9 @@
 			// 
 			// tabPageDirections
 			// 
+			this.tabPageDirections.Controls.Add(this.btnShowNonEmptyDirections);
+			this.tabPageDirections.Controls.Add(this.btnShowAllDirections);
+			this.tabPageDirections.Controls.Add(this.btnEmptyDirections);
 			this.tabPageDirections.Controls.Add(this.dgvDirections);
 			this.tabPageDirections.Location = new System.Drawing.Point(4, 25);
 			this.tabPageDirections.Name = "tabPageDirections";
@@ -169,6 +175,36 @@
 			this.tabPageDirections.Text = "Directions";
 			this.tabPageDirections.UseVisualStyleBackColor = true;
 			// 
+			// btnShowNonEmptyDirections
+			// 
+			this.btnShowNonEmptyDirections.Location = new System.Drawing.Point(224, 0);
+			this.btnShowNonEmptyDirections.Name = "btnShowNonEmptyDirections";
+			this.btnShowNonEmptyDirections.Size = new System.Drawing.Size(245, 30);
+			this.btnShowNonEmptyDirections.TabIndex = 3;
+			this.btnShowNonEmptyDirections.Text = "Show Directions With Students";
+			this.btnShowNonEmptyDirections.UseVisualStyleBackColor = true;
+			this.btnShowNonEmptyDirections.Click += new System.EventHandler(this.btnShowNonEmptyDirections_Click);
+			// 
+			// btnShowAllDirections
+			// 
+			this.btnShowAllDirections.Location = new System.Drawing.Point(475, 0);
+			this.btnShowAllDirections.Name = "btnShowAllDirections";
+			this.btnShowAllDirections.Size = new System.Drawing.Size(235, 31);
+			this.btnShowAllDirections.TabIndex = 2;
+			this.btnShowAllDirections.Text = "Show All Directions";
+			this.btnShowAllDirections.UseVisualStyleBackColor = true;
+			this.btnShowAllDirections.Click += new System.EventHandler(this.btnShowAllDirections_Click);
+			// 
+			// btnEmptyDirections
+			// 
+			this.btnEmptyDirections.Location = new System.Drawing.Point(0, 0);
+			this.btnEmptyDirections.Name = "btnEmptyDirections";
+			this.btnEmptyDirections.Size = new System.Drawing.Size(218, 31);
+			this.btnEmptyDirections.TabIndex = 1;
+			this.btnEmptyDirections.Text = "Show Only Empty Directions";
+			this.btnEmptyDirections.UseVisualStyleBackColor = true;
+			this.btnEmptyDirections.Click += new System.EventHandler(this.btnEmptyDirections_Click);
+			// 
 			// dgvDirections
 			// 
 			this.dgvDirections.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -176,11 +212,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgvDirections.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
 			this.dgvDirections.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvDirections.Location = new System.Drawing.Point(0, 30);
+			this.dgvDirections.Location = new System.Drawing.Point(0, 37);
 			this.dgvDirections.Name = "dgvDirections";
 			this.dgvDirections.RowHeadersWidth = 51;
 			this.dgvDirections.RowTemplate.Height = 24;
-			this.dgvDirections.Size = new System.Drawing.Size(796, 373);
+			this.dgvDirections.Size = new System.Drawing.Size(796, 366);
 			this.dgvDirections.TabIndex = 0;
 			// 
 			// tabPageDisciplines
@@ -278,6 +314,9 @@
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelCount;
 		private System.Windows.Forms.ComboBox cbGroupsDirections;
 		private System.Windows.Forms.Button btnShowAll;
+		private System.Windows.Forms.Button btnEmptyDirections;
+		private System.Windows.Forms.Button btnShowAllDirections;
+		private System.Windows.Forms.Button btnShowNonEmptyDirections;
 	}
 }
 
