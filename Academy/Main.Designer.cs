@@ -46,6 +46,9 @@
 			this.dgvDisciplines = new System.Windows.Forms.DataGridView();
 			this.tabPageTeachers = new System.Windows.Forms.TabPage();
 			this.dgvTeachers = new System.Windows.Forms.DataGridView();
+			this.cbStudentsGroup = new System.Windows.Forms.ComboBox();
+			this.cbStudentsDirection = new System.Windows.Forms.ComboBox();
+			this.btnGroupsDirectionCLR = new System.Windows.Forms.Button();
 			this.statusStrip.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageStudents.SuspendLayout();
@@ -96,6 +99,9 @@
 			// 
 			// tabPageStudents
 			// 
+			this.tabPageStudents.Controls.Add(this.btnGroupsDirectionCLR);
+			this.tabPageStudents.Controls.Add(this.cbStudentsDirection);
+			this.tabPageStudents.Controls.Add(this.cbStudentsGroup);
 			this.tabPageStudents.Controls.Add(this.dgvStudents);
 			this.tabPageStudents.Location = new System.Drawing.Point(4, 25);
 			this.tabPageStudents.Name = "tabPageStudents";
@@ -144,6 +150,7 @@
 			// 
 			// cbGroupsDirections
 			// 
+			this.cbGroupsDirections.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbGroupsDirections.FormattingEnabled = true;
 			this.cbGroupsDirections.Location = new System.Drawing.Point(8, 6);
 			this.cbGroupsDirections.Name = "cbGroupsDirections";
@@ -268,6 +275,36 @@
 			this.dgvTeachers.Size = new System.Drawing.Size(792, 368);
 			this.dgvTeachers.TabIndex = 0;
 			// 
+			// cbStudentsGroup
+			// 
+			this.cbStudentsGroup.ForeColor = System.Drawing.Color.Black;
+			this.cbStudentsGroup.FormattingEnabled = true;
+			this.cbStudentsGroup.Location = new System.Drawing.Point(7, 5);
+			this.cbStudentsGroup.Name = "cbStudentsGroup";
+			this.cbStudentsGroup.Size = new System.Drawing.Size(330, 24);
+			this.cbStudentsGroup.TabIndex = 1;
+			// 
+			// cbStudentsDirection
+			// 
+			this.cbStudentsDirection.ForeColor = System.Drawing.Color.Black;
+			this.cbStudentsDirection.FormattingEnabled = true;
+			this.cbStudentsDirection.Location = new System.Drawing.Point(344, 5);
+			this.cbStudentsDirection.Name = "cbStudentsDirection";
+			this.cbStudentsDirection.Size = new System.Drawing.Size(330, 24);
+			this.cbStudentsDirection.TabIndex = 2;
+			this.cbStudentsDirection.Text = "Directions";
+			this.cbStudentsDirection.SelectedIndexChanged += new System.EventHandler(this.cbStudentsDirection_SelectedIndexChanged);
+			// 
+			// btnGroupsDirectionCLR
+			// 
+			this.btnGroupsDirectionCLR.Location = new System.Drawing.Point(681, 6);
+			this.btnGroupsDirectionCLR.Name = "btnGroupsDirectionCLR";
+			this.btnGroupsDirectionCLR.Size = new System.Drawing.Size(75, 23);
+			this.btnGroupsDirectionCLR.TabIndex = 3;
+			this.btnGroupsDirectionCLR.Text = "Clear";
+			this.btnGroupsDirectionCLR.UseVisualStyleBackColor = true;
+			this.btnGroupsDirectionCLR.Click += new System.EventHandler(this.btnGroupsDirectionCLR_Click);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -317,6 +354,9 @@
 		private System.Windows.Forms.Button btnEmptyDirections;
 		private System.Windows.Forms.Button btnShowAllDirections;
 		private System.Windows.Forms.Button btnShowNonEmptyDirections;
+		private System.Windows.Forms.ComboBox cbStudentsDirection;
+		private System.Windows.Forms.ComboBox cbStudentsGroup;
+		private System.Windows.Forms.Button btnGroupsDirectionCLR;
 	}
 }
 
