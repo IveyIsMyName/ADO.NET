@@ -121,6 +121,7 @@ namespace AcademyDataSet
 			Console.WriteLine("\n-------------------------------------\n");
 			foreach(DataRow row in GroupsRelatedData.Tables[table].Rows)
 			{
+				Console.WriteLine(hasParents(table));
 				for (int i = 0; i < row.ItemArray.Length; i++)
 				{
 					Console.Write(row[i].ToString() + "\t");
@@ -128,6 +129,15 @@ namespace AcademyDataSet
 				Console.WriteLine();
 			}
 			Console.WriteLine("\n-------------------------------------\n");
+		}
+		bool hasParents(string table)
+		{
+			//return GroupsRelatedData.Relations.;
+			for (int i = 0; i<GroupsRelatedData.Relations.Count; i++)
+			{
+				if (GroupsRelatedData.Relations[i].ChildTable.TableName == table) return true;
+			}
+			return false;
 		}
 		void Check()
 		{
