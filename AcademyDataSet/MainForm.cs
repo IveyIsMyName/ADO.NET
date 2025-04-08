@@ -65,75 +65,100 @@ namespace AcademyDataSet
 				adapter.Fill(GroupsRelatedData.Tables[tables[i].Split(',')[0]]);
 			}
 		}
-		public void LoadGroupsRelatedData()
-		{
-			Console.WriteLine(nameof(GroupsRelatedData));
-			//1) Создаем 'DataSet'
-			//Перенесли в конструктор
+		//public void LoadGroupsRelatedData()
+		//{
+		//	Console.WriteLine(nameof(GroupsRelatedData));
+		//	//1) Создаем 'DataSet'
+		//	//Перенесли в конструктор
 
-			//2) Добавляем таблицы в 'DataSet':
+		//	//2) Добавляем таблицы в 'DataSet':
 
-			DataTable dsTable_Directions = new DataTable("Directions");
-			dsTable_Directions.Columns.Add("direction_id", typeof(byte));
-			dsTable_Directions.Columns.Add("direction_name", typeof(string));
-			dsTable_Directions.PrimaryKey = new DataColumn[] { dsTable_Directions.Columns["direction_id"] };
-			GroupsRelatedData.Tables.Add(dsTable_Directions);
+		//	DataTable dsTable_Directions = new DataTable("Directions");
+		//	dsTable_Directions.Columns.Add("direction_id", typeof(byte));
+		//	dsTable_Directions.Columns.Add("direction_name", typeof(string));
+		//	dsTable_Directions.PrimaryKey = new DataColumn[] { dsTable_Directions.Columns["direction_id"] };
+		//	GroupsRelatedData.Tables.Add(dsTable_Directions);
 
-			DataTable ds_Table_Groups = new DataTable("Groups");
-			ds_Table_Groups.Columns.Add("group_id", typeof(int));
-			ds_Table_Groups.Columns.Add("group_name", typeof(string));
-			ds_Table_Groups.Columns.Add("direction", typeof(byte));
-			ds_Table_Groups.PrimaryKey = new DataColumn[] { ds_Table_Groups.Columns["group_id"] };
-			GroupsRelatedData.Tables.Add(ds_Table_Groups);
+		//	DataTable ds_Table_Groups = new DataTable("Groups");
+		//	ds_Table_Groups.Columns.Add("group_id", typeof(int));
+		//	ds_Table_Groups.Columns.Add("group_name", typeof(string));
+		//	ds_Table_Groups.Columns.Add("direction", typeof(byte));
+		//	ds_Table_Groups.PrimaryKey = new DataColumn[] { ds_Table_Groups.Columns["group_id"] };
+		//	GroupsRelatedData.Tables.Add(ds_Table_Groups);
 
-			//3) Строим связи между таблицами:
-			string dsRelation_GroupsDirections = "GroupsDirection";
-			GroupsRelatedData.Relations.Add
-				(
-				dsRelation_GroupsDirections,
-				GroupsRelatedData.Tables["Directions"].Columns["direction_id"],             //Parent field (PK)
-				ds_Table_Groups.Columns["direction"]                                        //Child field (FK)
-				);
+		//	//3) Строим связи между таблицами:
+		//	string dsRelation_GroupsDirections = "GroupsDirection";
+		//	GroupsRelatedData.Relations.Add
+		//		(
+		//		dsRelation_GroupsDirections,
+		//		GroupsRelatedData.Tables["Directions"].Columns["direction_id"],             //Parent field (PK)
+		//		ds_Table_Groups.Columns["direction"]                                        //Child field (FK)
+		//		);
 
-			//4) Загружаем данные в таблицы:
-			string directions_cmd = "SELECT * FROM Directions";
-			string groups_cmd = "SELECT * FROM Groups";
-			SqlDataAdapter directionsAdapter = new SqlDataAdapter(directions_cmd, connection);
-			SqlDataAdapter groupsAdapter = new SqlDataAdapter(groups_cmd, connection);
+		//	//4) Загружаем данные в таблицы:
+		//	string directions_cmd = "SELECT * FROM Directions";
+		//	string groups_cmd = "SELECT * FROM Groups";
+		//	SqlDataAdapter directionsAdapter = new SqlDataAdapter(directions_cmd, connection);
+		//	SqlDataAdapter groupsAdapter = new SqlDataAdapter(groups_cmd, connection);
 
-			connection.Open();
-			directionsAdapter.Fill(GroupsRelatedData.Tables["Directions"]);
-			groupsAdapter.Fill(GroupsRelatedData.Tables["Groups"]);
-			connection.Close();
+		//	connection.Open();
+		//	directionsAdapter.Fill(GroupsRelatedData.Tables["Directions"]);
+		//	groupsAdapter.Fill(GroupsRelatedData.Tables["Groups"]);
+		//	connection.Close();
 
-			foreach (DataRow row in GroupsRelatedData.Tables["Directions"].Rows)
-			{
-				Console.WriteLine($"{row["direction_id"]}\t{row["direction_name"]}");
-			}
-			Console.WriteLine("\n------------------------------------------\n");
-			foreach (DataRow row in GroupsRelatedData.Tables["Groups"].Rows)
-			{
-				Console.WriteLine($"{row["group_id"]}\t{row["group_name"]}\t{row.GetParentRow(dsRelation_GroupsDirections)["direction_name"]}");
-			}
-		}
+		//	foreach (DataRow row in GroupsRelatedData.Tables["Directions"].Rows)
+		//	{
+		//		Console.WriteLine($"{row["direction_id"]}\t{row["direction_name"]}");
+		//	}
+		//	Console.WriteLine("\n------------------------------------------\n");
+		//	foreach (DataRow row in GroupsRelatedData.Tables["Groups"].Rows)
+		//	{
+		//		Console.WriteLine($"{row["group_id"]}\t{row["group_name"]}\t{row.GetParentRow(dsRelation_GroupsDirections)["direction_name"]}");
+		//	}
+		//}
 		void Print(string table)
 		{
 			Console.WriteLine("\n-------------------------------------\n");
-			foreach(DataRow row in GroupsRelatedData.Tables[table].Rows)
+			//foreach (DataRow row in GroupsRelatedData.Tables[table].Rows)
+			//{
+			//	for (int i = 0; i < row.ItemArray.Length; i++)
+			//	{
+			//		Console.Write(row[i].ToString() + "\t");
+			//	}
+			//	Console.WriteLine();
+			//}
+
+
+			foreach (DataRow row in GroupsRelatedData.Tables[table].Rows)
 			{
-				Console.WriteLine(hasParents(table));
 				for (int i = 0; i < row.ItemArray.Length; i++)
 				{
-					Console.Write(row[i].ToString() + "\t");
+					object value = row[i];
+					if (hasParents(table))
+					{
+						//Находим отношение, где текущая таблица - дочерняя
+						foreach (DataRelation relation in GroupsRelatedData.Relations)
+						{
+							if (
+								relation.ChildTable.TableName == table &&
+								relation.ChildColumns[0].ColumnName == GroupsRelatedData.Tables[table].Columns[i].ColumnName
+								)
+							{
+								value = row.GetParentRow(relation)?[1] ?? value;
+								break;
+							}
+						}
+					}
+					Console.Write(value + "\t");
 				}
 				Console.WriteLine();
 			}
 			Console.WriteLine("\n-------------------------------------\n");
 		}
+
 		bool hasParents(string table)
 		{
-			//return GroupsRelatedData.Relations.;
-			for (int i = 0; i<GroupsRelatedData.Relations.Count; i++)
+			for (int i = 0; i < GroupsRelatedData.Relations.Count; i++)
 			{
 				if (GroupsRelatedData.Relations[i].ChildTable.TableName == table) return true;
 			}
