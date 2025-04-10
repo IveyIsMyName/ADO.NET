@@ -243,8 +243,8 @@ namespace AcademyDataSet
 
 		private void cbDirections_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			DataRow row = GroupsRelatedData.Tables["Directions"].Rows.Find(cbDirections.SelectedValue);
-			Console.WriteLine($"{cbDirections.SelectedIndex}\t{cbDirections.SelectedValue}");
+			//DataRow row = GroupsRelatedData.Tables["Directions"].Rows.Find(cbDirections.SelectedValue);
+			//Console.WriteLine($"{cbDirections.SelectedIndex}\t{cbDirections.SelectedValue}");
 			//cbGroups.DataSource = row.GetChildRows("GroupsDirections");
 			GroupsRelatedData.Tables["Groups"].DefaultView.RowFilter = $"direction={cbDirections.SelectedValue}";
 		}
