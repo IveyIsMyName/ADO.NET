@@ -20,6 +20,7 @@ namespace AcademyDataSet
 		readonly SqlConnection connection;
 		DataSet GroupsRelatedData;
 		List<string> tables;
+		List<string> commands;
 		public MainForm()
 		{
 			InitializeComponent();
@@ -32,6 +33,16 @@ namespace AcademyDataSet
 			GroupsRelatedData = new DataSet(nameof(GroupsRelatedData));
 			//LoadGroupsRelatedData();
 			Check();
+			//Загружаем направления из Базы в ComboBox
+			cbDirections.DataSource = GroupsRelatedData.Tables["Directions"];
+			//Из множества полей таблицы нужно указать какое поле будет отображаться в выпадающем списке
+			cbDirections.DisplayMember = "direction_name";
+			//и какое поле
+			cbDirections.ValueMember = "direction_id";
+
+			cbGroups.DataSource = GroupsRelatedData.Tables["Groups"];
+			cbGroups.DisplayMember = "group_name";
+			cbGroups.ValueMember = "group_id";
 		}
 		public void AddTable(string tableName, string columns)
 		{
@@ -229,5 +240,13 @@ namespace AcademyDataSet
 		public static extern bool AllocConsole();
 		[DllImport("kernel32.dll")]
 		public static extern bool FreeConsole();
+
+		private void cbDirections_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			DataRow row = GroupsRelatedData.Tables["Directions"].Rows.Find(cbDirections.SelectedValue);
+			Console.WriteLine($"{cbDirections.SelectedIndex}\t{cbDirections.SelectedValue}");
+			//cbGroups.DataSource = row.GetChildRows("GroupsDirections");
+			GroupsRelatedData.Tables["Groups"].DefaultView.RowFilter = $"direction={cbDirections.SelectedValue}";
+		}
 	}
 }
