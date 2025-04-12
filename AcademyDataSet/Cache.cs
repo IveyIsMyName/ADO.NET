@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Security.Cryptography.X509Certificates;
 
 
 namespace AcademyDataSet
@@ -17,6 +18,10 @@ namespace AcademyDataSet
 		public DataSet Set { get; set; }
 		List<string> tables;
 		List<string> commands;
+		readonly System.Threading.Timer refreshTimer;
+		readonly int refreshInterval = 5 * 60 * 1000; // 5 min
+		
+
 		public Cache()
 		{
 			CONNECTION_STRING = ConfigurationManager.ConnectionStrings["PV_319_Import"].ConnectionString;
@@ -25,6 +30,34 @@ namespace AcademyDataSet
 
 			tables = new List<string>();
 			Set = new DataSet(nameof(Set));
+
+			refreshTimer = new System.Threading.Timer(RefreshCacheCallback, null, refreshInterval, refreshInterval);
+			
+		}
+		public void RefreshCache()
+		{
+			Set.EnforceConstraints = false;
+			foreach (DataTable table in Set.Tables)
+			{
+				// Пропускаем таблицы, которые являются родительскими в отношениях
+				if (table.ChildRelations.Count > 0 && table.ParentRelations.Count == 0)
+					continue;
+
+				table.Clear();
+			}
+
+			// Теперь очищаем родительские таблицы
+			foreach (DataTable table in Set.Tables)
+			{
+				if (table.ChildRelations.Count > 0 && table.ParentRelations.Count == 0)
+					table.Clear();
+			}
+			Load();
+			Set.EnforceConstraints = true;
+		}
+		public void RefreshCacheCallback(object state)
+		{
+			RefreshCache();
 		}
 		public void AddTable(string tableName, string columns)
 		{

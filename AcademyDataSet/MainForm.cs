@@ -42,6 +42,8 @@ namespace AcademyDataSet
 			cbGroups.DisplayMember = "group_name";
 			cbGroups.ValueMember = "group_id";
 			//Check();
+
+			GroupsRelatedData.RefreshCache();
 		}
 		private void cbDirections_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -55,5 +57,12 @@ namespace AcademyDataSet
 		public static extern bool AllocConsole();
 		[DllImport("kernel32.dll")]
 		public static extern bool FreeConsole();
+
+		private void btnRefresh_Click(object sender, EventArgs e)
+		{
+			GroupsRelatedData.RefreshCache();
+			MessageBox.Show("Cache refreshed succeesfully!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+		
 	}
 }
