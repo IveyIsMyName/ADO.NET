@@ -19,6 +19,7 @@ namespace Academy
 		public Dictionary<string, int> d_directions;
 		public Dictionary<string, int> d_groups;
 
+		public Dictionary<ComboBox, List<ComboBox>> d_dependecies; 
 		DataGridView[] tables;
 		Query[] queries = new Query[]
 		{
@@ -56,6 +57,11 @@ namespace Academy
 		public Main()
 		{
 			InitializeComponent();
+
+			d_dependecies = new Dictionary<ComboBox, List<ComboBox>>()
+			{
+				{ cbStudentsDirection, new List<ComboBox> () { cbStudentsGroup } }
+			};
 
 			tables = new DataGridView[]
 		{
@@ -242,14 +248,21 @@ namespace Academy
 			int i = (sender as ComboBox).SelectedIndex;
 			string dictionary_name = $"d_{cb_suffix.ToLower()}s";
 			Dictionary<string, int> dictionary = this.GetType().GetField(dictionary_name).GetValue(this) as Dictionary<string, int>;
-			Dictionary<string, int> d_groups = connector.GetDictionary
-				(
-				"group_id,group_name",
-				"Groups",
-				i == 0 ? "" : $"{cb_suffix.ToLower()}={dictionary[(sender as ComboBox).SelectedItem.ToString()]}"
-				);
-			cbStudentsGroup.Items.Clear();
-			cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
+			//Dictionary<string, int> d_groups = connector.GetDictionary
+			//	(
+			//	"group_id,group_name",
+			//	"Groups",
+			//	i == 0 ? "" : $"{cb_suffix.ToLower()}={dictionary[(sender as ComboBox).SelectedItem.ToString()]}"
+			//	);
+			//cbStudentsGroup.Items.Clear();
+			//cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
+			if(d_dependecies.ContainsKey(sender as ComboBox))
+			{
+				foreach(ComboBox cb in d_dependecies[sender as ComboBox])
+				{
+					GetDependentData(cb, sender as ComboBox);
+				}
+			}
 
 			int t = tabControl.SelectedIndex;
 			
@@ -261,6 +274,27 @@ namespace Academy
 			else if (condition != "")q.Condition += $" AND {condition}";
 				LoadPage(t, q);
 			toolStripStatusLabelCount.Text = $"Количество студентов:{dgvStudents.Rows.Count - 1}";
+		}
+		void GetDependentData(ComboBox dependent, ComboBox determinant)
+		{
+			Console.WriteLine("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+			Console.WriteLine(dependent.Name + "\t" + determinant.Name);
+			string dependent_root =dependent.Name.Substring(Array.FindLastIndex<char>(dependent.Name.ToCharArray(), Char.IsUpper));
+			string determinant_root =determinant.Name.Substring(Array.FindLastIndex<char>(determinant.Name.ToCharArray(), Char.IsUpper));
+			Dictionary<string, int> dictionary =
+				connector.GetDictionary
+				(
+					$"{dependent_root.ToLower()}_id,{dependent_root.ToLower()}_name",
+					$"{dependent_root}s,{determinant_root}s",
+					determinant.SelectedItem == null || determinant.SelectedIndex <=0 ? "" : $"{determinant_root.ToLower()}={determinant.SelectedIndex}"
+					);
+
+			dependent.Items.Clear();
+			dependent.Items.AddRange(dictionary.Select(d => d.Key).ToArray());
+
+			Console.WriteLine("Dependent:\t"+dependent_root);
+			Console.WriteLine("Determinant:\t"+determinant_root);
+			Console.WriteLine("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 		}
 
 		private void btnGroupsDirectionCLR_Click(object sender, EventArgs e)
