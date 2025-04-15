@@ -130,7 +130,7 @@
 			this.cbStudentsDirection.Size = new System.Drawing.Size(330, 24);
 			this.cbStudentsDirection.TabIndex = 2;
 			this.cbStudentsDirection.Text = "Directions";
-			this.cbStudentsDirection.SelectedIndexChanged += new System.EventHandler(this.cbDirection_SelectedIndexChanged);
+			this.cbStudentsDirection.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
 			// 
 			// cbStudentsGroup
 			// 
@@ -140,7 +140,7 @@
 			this.cbStudentsGroup.Name = "cbStudentsGroup";
 			this.cbStudentsGroup.Size = new System.Drawing.Size(330, 24);
 			this.cbStudentsGroup.TabIndex = 1;
-			this.cbStudentsGroup.SelectedIndexChanged += new System.EventHandler(this.cbStudentsGroup_SelectedIndexChanged);
+			this.cbStudentsGroup.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
 			// 
 			// dgvStudents
 			// 

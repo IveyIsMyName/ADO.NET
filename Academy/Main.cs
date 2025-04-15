@@ -86,7 +86,7 @@ namespace Academy
 				"[group]=group_id AND direction=direction_id");
 			toolStripStatusLabelCount.Text = $"Количество студентов:{dgvStudents.Rows.Count - 1}";
 			
-			cbGroupsDirection.SelectedIndexChanged += cbDirection_SelectedIndexChanged;
+			cbGroupsDirection.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
 			//cbGroupsDirections.Items.AddRange(connector.SelectColumn("direction_name", "Directions").ToArray());
 		}
 		
@@ -181,7 +181,6 @@ namespace Academy
 
 		private void btnShowAll_Click(object sender, EventArgs e)
 		{
-			cbGroupsDirection.SelectedIndex = -1;
 			dgvGroups.DataSource = connector.Select(
 				"group_name, dbo.GetLearningDaysFor(group_name) AS weekdays, start_time, direction_name",
 				"Groups,Directions",
@@ -229,7 +228,7 @@ namespace Academy
 			toolStripStatusLabelCount.Text = $"Количество заполненных направлений: {CountRecordsInDGV(dgvDirections)}";
 		}
 
-		private void cbDirection_SelectedIndexChanged(object sender, EventArgs e)
+		private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string cb_name = (sender as ComboBox).Name;
 			Console.WriteLine(cb_name);
@@ -257,7 +256,7 @@ namespace Academy
 			Query q = new Query (queries[t]);
 
 			string condition = 
-				(i == 0 || (sender as ComboBox).SelectedItem == null ? "" : $"{cb_suffix.ToLower()}={dictionary[$"{(sender as ComboBox).SelectedItem}"]}");
+				(i == 0 || (sender as ComboBox).SelectedItem == null ? "" : $"[{cb_suffix.ToLower()}]={dictionary[$"{(sender as ComboBox).SelectedItem}"]}");
 			if (q.Condition == "") q.Condition = condition;
 			else if (condition != "")q.Condition += $" AND {condition}";
 				LoadPage(t, q);
@@ -272,33 +271,33 @@ namespace Academy
 			toolStripStatusLabelCount.Text = $"Количество студентов:{dgvStudents.Rows.Count - 1}";
 		}
 
-		private void cbStudentsGroup_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			string cb_name = (sender as ComboBox).Name;
-			Console.WriteLine(cb_name);
-			string tab_name = tabControl.SelectedTab.Name;
+		//private void cbStudentsGroup_SelectedIndexChanged(object sender, EventArgs e)
+		//{
+		//	string cb_name = (sender as ComboBox).Name;
+		//	Console.WriteLine(cb_name);
+		//	string tab_name = tabControl.SelectedTab.Name;
 
-			int last_capital_index =
-				Array.FindLastIndex<char>(cb_name.ToCharArray(), Char.IsUpper);
-			string cb_suffix = cb_name.Substring(last_capital_index);
-			Console.WriteLine(cb_suffix);
+		//	int last_capital_index =
+		//		Array.FindLastIndex<char>(cb_name.ToCharArray(), Char.IsUpper);
+		//	string cb_suffix = cb_name.Substring(last_capital_index);
+		//	Console.WriteLine(cb_suffix);
 
-			int i = (sender as ComboBox).SelectedIndex;
-			string dictionary_name = $"d_{cb_suffix.ToLower()}s";
-			Dictionary<string, int> dictionary = this.GetType().GetField(dictionary_name).GetValue(this) as Dictionary<string, int>;
+		//	int i = (sender as ComboBox).SelectedIndex;
+		//	string dictionary_name = $"d_{cb_suffix.ToLower()}s";
+		//	Dictionary<string, int> dictionary = this.GetType().GetField(dictionary_name).GetValue(this) as Dictionary<string, int>;
 
-			int t = tabControl.SelectedIndex;
+		//	int t = tabControl.SelectedIndex;
 
-			Query q = new Query(queries[t]);
+		//	Query q = new Query(queries[t]);
 
-			string condition =
-				(i == 0 || (sender as ComboBox).SelectedItem == null ? "" : $"[{cb_suffix.ToLower()}]={dictionary[$"{(sender as ComboBox).SelectedItem}"]}");
+		//	string condition =
+		//		(i == 0 || (sender as ComboBox).SelectedItem == null ? "" : $"[{cb_suffix.ToLower()}]={dictionary[$"{(sender as ComboBox).SelectedItem}"]}");
 
-			if (q.Condition == "") q.Condition = condition;
-			else if (condition != "") q.Condition += $" AND {condition}";
+		//	if (q.Condition == "") q.Condition = condition;
+		//	else if (condition != "") q.Condition += $" AND {condition}";
 
-			LoadPage(t, q);
-			toolStripStatusLabelCount.Text = $"Количество студентов:{dgvStudents.Rows.Count - 1}";
-		}
+		//	LoadPage(t, q);
+		//	toolStripStatusLabelCount.Text = $"Количество студентов:{dgvStudents.Rows.Count - 1}";
+		//}
 	}
 }
