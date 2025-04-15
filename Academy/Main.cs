@@ -239,6 +239,7 @@ namespace Academy
 				Array.FindLastIndex<char>(cb_name.ToCharArray(), Char.IsUpper);
 			string cb_suffix = cb_name.Substring(last_capital_index);
 			Console.WriteLine(cb_suffix);
+
 			int i = (sender as ComboBox).SelectedIndex;
 			string dictionary_name = $"d_{cb_suffix.ToLower()}s";
 			Dictionary<string, int> dictionary = this.GetType().GetField(dictionary_name).GetValue(this) as Dictionary<string, int>;
@@ -268,6 +269,35 @@ namespace Academy
 			dgvStudents.DataSource = connector.Select
 				(queries[0].Columns, queries[0].Tables);
 			cbStudentsDirection.SelectedIndex = cbStudentsGroup.SelectedIndex = 0;
+			toolStripStatusLabelCount.Text = $"Количество студентов:{dgvStudents.Rows.Count - 1}";
+		}
+
+		private void cbStudentsGroup_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			string cb_name = (sender as ComboBox).Name;
+			Console.WriteLine(cb_name);
+			string tab_name = tabControl.SelectedTab.Name;
+
+			int last_capital_index =
+				Array.FindLastIndex<char>(cb_name.ToCharArray(), Char.IsUpper);
+			string cb_suffix = cb_name.Substring(last_capital_index);
+			Console.WriteLine(cb_suffix);
+
+			int i = (sender as ComboBox).SelectedIndex;
+			string dictionary_name = $"d_{cb_suffix.ToLower()}s";
+			Dictionary<string, int> dictionary = this.GetType().GetField(dictionary_name).GetValue(this) as Dictionary<string, int>;
+
+			int t = tabControl.SelectedIndex;
+
+			Query q = new Query(queries[t]);
+
+			string condition =
+				(i == 0 || (sender as ComboBox).SelectedItem == null ? "" : $"[{cb_suffix.ToLower()}]={dictionary[$"{(sender as ComboBox).SelectedItem}"]}");
+
+			if (q.Condition == "") q.Condition = condition;
+			else if (condition != "") q.Condition += $" AND {condition}";
+
+			LoadPage(t, q);
 			toolStripStatusLabelCount.Text = $"Количество студентов:{dgvStudents.Rows.Count - 1}";
 		}
 	}
