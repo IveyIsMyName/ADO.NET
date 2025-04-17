@@ -21,6 +21,7 @@ namespace Academy
 
 		public Dictionary<ComboBox, List<ComboBox>> d_children;
 		public Dictionary<ComboBox, List<ComboBox>> d_parents;
+
 		DataGridView[] tables;
 		Query[] queries = new Query[]
 		{
@@ -55,6 +56,7 @@ namespace Academy
 			$"Количество дисциплин: ",
 			$"Количество преподавателй: ",
 		};
+
 		public Main()
 		{
 			InitializeComponent();
@@ -121,6 +123,7 @@ namespace Academy
 		//				);
 		//	toolStripStatusLabelCount.Text = $"Количество групп: {CountRecordsInDGV(dgvGroups)}";
 		//}
+
 		void LoadPage(int i, Query query = null)
 		{
 			if (query == null) query = queries[i];
